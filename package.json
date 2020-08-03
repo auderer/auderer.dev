@@ -20,6 +20,7 @@
     "expo": "^38.0.9",
     "gatsby": "^2.23.12",
     "gatsby-image": "^2.4.14",
+    "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-react-native-web": "^3.1.0",
     "gatsby-plugin-sharp": "^2.6.24",
     "gatsby-source-filesystem": "^2.3.23",
@@ -28,6 +29,7 @@
     "quantum-elements": "^1.0.0-alpha.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-helmet": "^6.1.0",
     "react-native-web": "^0.13.4"
   },
   "devDependencies": {

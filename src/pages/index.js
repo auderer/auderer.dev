@@ -6,11 +6,16 @@ import Container from '../components/container'
 import HeroImage from '../images/blueprint.jpg'
 import NavLink from '../components/navlink'
 import { lighten } from 'polished'
+import { Helmet } from 'react-helmet'
 
 export default function Home() {
   const theme = useTheme() 
   return (
     <Box>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Full-stack Web/Cloud Developer - Michael Auderer</title>
+      </Helmet>
       <Navbar />
       <Container dir="row" justify="space-between" align="flex-start" mt={32} px={16}>
         <Flex align="flex-start">
