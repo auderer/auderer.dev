@@ -12,8 +12,6 @@ function Navbar() {
   const theme = useTheme()
   const isMobile = useBreakpoint() === 0
 
-  console.log(theme.colors.primary)
-  
   return (
     <Container maxWidth={1180} h={80} px={8} mb={16} align="center" justify="space-between" dir="row">
       <NavLink to="/">
