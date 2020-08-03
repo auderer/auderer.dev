@@ -24,6 +24,7 @@
     "gatsby-plugin-sharp": "^2.6.24",
     "gatsby-source-filesystem": "^2.3.23",
     "gatsby-transformer-sharp": "^2.5.12",
+    "polished": "^3.6.5",
     "quantum-elements": "^1.0.0-alpha.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

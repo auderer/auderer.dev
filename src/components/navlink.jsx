@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { navigate } from 'gatsby'
 import { Flex, Text } from 'quantum-elements'
 
-function NavLink({ to, text, children, ...props }) {
+function NavLink({ to, text, bg, hoverBg = '#ebebeb', children, ...props }) {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -10,8 +10,9 @@ function NavLink({ to, text, children, ...props }) {
       alignItems="center"
       justifyContent="center"
       dir="row"
-      bg={hovered ? '#ebebeb' : ''}
-      p={8}
+      bg={hovered ? hoverBg : bg}
+      px={12}
+      py={4}
       mx={8}
       radius={4}
       cursor="pointer"
