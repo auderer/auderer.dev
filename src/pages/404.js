@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/navbar'
 import Container from '../components/container'
 import {Box, Spacer, Text, Center} from 'quantum-elements'
+import {navigate} from 'gatsby'
 
 function MissingPage() {
   return (
@@ -30,9 +31,9 @@ function MissingPage() {
           py={6} 
           radius={4} 
           style={{ cursor: 'pointer' }}
-          onClick={() => window.history.back()}
+          onClick={() => navigate('/')}
         >
-          <Text color="white" weight={500}>Go Back</Text>
+          <Text color="white" weight={500}>Go Home</Text>
         </Center>
       </Container>
     </Box>
