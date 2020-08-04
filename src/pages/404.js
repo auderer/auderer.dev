@@ -10,10 +10,10 @@ function MissingPage() {
       <Navbar />
       <Spacer h={32} />
       <Container px={16} align="flex-start">
-        <Text size={32} weight={500}>
+        <Text size={32} weight={600} family="heading">
           Page not found
         </Text>
-        <Spacer h={32} />
+        <Spacer h={24} />
         <Text size={16} lineHeight="150%">
           F#*k! That page doesn't seem to exist, or it was removed.
           <br />
@@ -22,14 +22,14 @@ function MissingPage() {
           <a href="https://github.com/auderer/auderer.dev/issues/new" target="_blank">
             report it here!
           </a>
-          <br />
-          <br />
         </Text>
+        <Spacer h={32} />
         <Center
           bg="primary" 
           px={8} 
           py={6} 
           radius={4} 
+          shadow="0px 2px 4px rgba(0,0,0,20%)"
           style={{ cursor: 'pointer' }}
           onClick={() => navigate('/')}
         >

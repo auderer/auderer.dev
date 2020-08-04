@@ -25,7 +25,7 @@ function Post({ data: { site, mdx } }) {
           <header>
             <Center>
               <Box width="100%" maxWidth={680} px={16}>
-                <Text as="h1" size={40} weight={500} color="#2a2a2a">
+                <Text lineHeight="140%" size={40} weight={600} family="heading" color="#2a2a2a">
                   {title}
                 </Text>
               </Box>

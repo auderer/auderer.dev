@@ -12,7 +12,7 @@ function BlogIndex({ data }) {
       <Spacer h={16} />
       <Container>
         <Center>
-          <Text size={32} weight={600}>Blog Posts</Text>
+          <Text size={32} weight={600} family="heading">Blog Posts</Text>
         </Center>
         <Spacer h={48} />
         {posts.map(({ node }) => {
