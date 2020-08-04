@@ -1,0 +1,128 @@
+---
+slug: using-computer-vision-to-filter-images
+title: Using Computer Vision to Automatically Filter Images
+description: Using computer vision to automatically filter images
+date: '2019-03-28'
+author: Michael Auderer
+keywords:
+  - javascript
+  - node.js
+  - cloud
+redirects:
+  - test
+---
+
+While image recognition is a seemingly simple task for humans to do, it’s actually a very complicated process. Computers can already “see” images in the sense that they store the data of every tiny pixel to make up the full picture. However, recognizing patterns in this data and creating a quickly searchable memory of common patterns is extremely difficult.
+
+Fortunately, Google Cloud provides a very simple API to detect the content of images using computer vision. This can be useful to categorize images, recognize text, or even moderate content to prevent inappropriate images from being posted on your site. In this article, we will quickly build CatBook—an image sharing site which only allows pictures with cats in them, no dogs allowed!
+
+## Can Has Cats?
+
+Cats are awesome. Let’s build an app where people can post pictures of their cats… but what if somebody uploads a dog? Manually moderating our uploads to only contain cats would be overly time-consuming. To solve this problem, we’ll use computer vision to detect the content of each upload, and reject anything other than cats. In this tutorial, we’ll show you how to quickly build a sleek modern interface to automatically moderate images using computer vision.
+
+Users can upload pictures of cats to CatBook, but not dogs, even if they are really “cute”.
+
+Try out the finished project demo yourself.
+
+Here’s the code on GitHub.
+
+## Project Setup
+
+To build CatBook, we will use React, Node.js, Heroku, and Google Cloud. We will use Heroku to host a simple Node.js + Express web server which connects to Google Cloud for Cloud Vision. While we could use AppEngine, Heroku makes it easier to get an app running quickly with minimal setup. Just push code updates to GitHub and it automatically updates your app! This is great for a small project and allows you to quickly iterate while developing and testing. If CatBook takes off, then it can also scale for millions of cats lovers!
+
+## Start with a Basic “Hello World” App
+
+First, we’ll create a basic “Hello World” app to get our project dependencies and app installation setup. We’ll add our frontend and backend afterward. Start by creating a new directory for CatBook. We will use a monorepo file structure, so the client and server files will all live within the same repository. Run `git init` and `npm init -y` in this folder to generate a repo and package.json file. Next, bootstrap a basic React project by running `npx create-react-app client`. This will set up React inside the client subfolder, which is where the frontend of our application will live.
+
+```sh
+# create catbook folder and cd into it
+mkdir catbook && cd $_
+# initialize project
+git init
+npm init -y
+# create react app
+npx create-react-app client
+```
+
+Now we’ll set up a basic static server. First create a folder called server. Initialize a package.json and install the dependencies below. Some of these will not be used until later in this article, but we might as well install them now.
+
+```sh
+# cd out of the client directory
+cd ..
+
+# make the server folder and cd into it
+mkdir server && cd $_
+
+# initialize package.json
+npm init -y
+
+# install dependencies
+npm i express dotenv multer @google-cloud/vision
+```
+
+Let’s create a static server with Express to serve up our React app. Create a file called index.js in the server folder and add the following code. Locally, we will develop with the server on port 8080, but Heroku automatically assigns a port via the PORT environment variable. To handle both cases, we’ll serve on either the environment variable if it exists, or default to port 8080.
+
+`/server/index.js`
+
+```js
+const express = require('express');
+
+const app = express();
+
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// start the server
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Hello world! Listening on port ${port}`));
+```
+
+`/server/package.json`
+
+```json
+scripts"": 
+  "{start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+    },
+```
+
+Now, before we can test this, we need to build the React app. First cd into the client folder, then run npm run build to build the app. When it finishes building, we can run our express server and test it out on localhost:8080.
+
+```sh
+cd ../client
+npm run build
+cd ../server
+npm start
+# Hello world! Server now listening on localhost:8080
+```
+
+f you see the React starter page, you’re ready to deploy this initial app! First, create a GitHub repository and push your project to it. Now, let’s create a Heroku app and set up automatic deployments from this repository.
+
+From the top-right corner of the Heroku dashboard, click New > Create new app.
+
+Give your app a suitable name, then from the Deploy tab, select GitHub as the Deployment Method.
+
+In the next section, search for your GitHub repository and select it to connect it to your Heroku app. Then, in the section below, click “Enable Automatic Deploys”. Now, when you push commits to your master branch, Heroku will automatically deploy the latest version of your app! This allows your master branch to serve as a single source of truth for your app—the live version always represents the code in the master branch. There is no concern over exactly which code has been deployed.
+
+Now, to make the code we already pushed live, click Deploy Branch in the final Manual Deploy section.
+
+Now, in the top-right corner of your Heroku app, click Open App. This will open a new tab to the URL of your live site!
+
+Now that we have a Heroku app set up with automatic deployments from GitHub, we can simply push changes to our repository so they automatically update on our live site.
+
+## Set Up Google Cloud Vision API
+
+In order for CatBook to work, we need to build a backend which accepts image uploads and connects to Google Cloud for image recognition. In this section, we’ll set up Google Cloud Vision API and build a server to handle image uploads, as well as sending back all the most recent cat uploads.
+
+### Google Cloud
+
+First, create a new Google Cloud project. From the sidebar, click APIs & Services, then click Enable APIs and Services at the top of the page.
+
+This is where you can enable a wide variety of APIs and Services within your Google Cloud project. Search for “vision” and click Cloud Vision API, then click Enable.
+
+Now, the Cloud Vision API is enabled for this project. The final step from the Cloud Console is to create a service account key. This will authenticate our Node.js server to access the APIs in our Google Cloud project. To do this, go to the create service account key page. Select New service account from the service account dropdown list, then give it a name. From the Role dropdown list, select Project > Owner. Make sure the Key Type is set to JSON, then click Create.
+
+This will download a JSON file to your computer. However, it’s best if we don’t actually store this file in our repository. Instead, we will convert it into an environment variable and set it through the settings of our Heroku app. This allows us to keep the credentials out of our repository, and it also provides a way to easily change the credentials without having to re-deploy the entire app.
+
+First, run npx minify-json /path/to/service-account-key.json. This will minify the file into a single line. Then, open the file and copy the minified JSON. Create a file called .env in your server folder, pasting the minified json as the first value:
+
+

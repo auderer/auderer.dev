@@ -37,11 +37,7 @@ function Navbar() {
             <NavLink to="/blog" text="Blog" />
             <NavLink to="/portfolio" text="Portfolio" />
             <NavLink to="/about" text="About" />
-            <NavLink to="/contact">
-              <Text family="heading" size={18} weight={500} color="primary">
-                CONTACT
-              </Text>
-            </NavLink>
+            <NavLink to="/contact" text="Contact" />
           </Flex>
         )}
       </Box>
