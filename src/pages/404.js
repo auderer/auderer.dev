@@ -18,7 +18,9 @@ function MissingPage() {
           <br />
           <br />
           Is this page supposed to be here? Please&nbsp;
-          <a href="https://github.com/auderer/auderer.dev/issues/new">report it here!</a>
+          <a href="https://github.com/auderer/auderer.dev/issues/new" target="_blank">
+            report it here!
+          </a>
           <br />
           <br />
         </Text>
